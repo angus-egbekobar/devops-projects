@@ -30,3 +30,4 @@ sudo ./provision_server.sh
 ## Author
 Angus Egbekobar | AWS Certified Solutions Architect
 # Devops learning journey
+credential test
