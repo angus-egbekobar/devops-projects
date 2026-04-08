@@ -1,0 +1,26 @@
+services:
+  app:
+    build:  
+      context: .
+      network: host
+    ports:
+      - "8080:8080"  #Map port 8080 on your machine to port 8080 in the container. Same as -p in docker run.
+    environment:
+     - DB_HOST=db
+     - DB_NAME=visitdb
+     - DB_USER=devops
+     - DB_PASSWORD=password
+    depends_on:  #Don't start app until db is started first. The database needs to be ready before the app tries to connect.
+      - db
+    restart: on-failure #if something still goes wrong,try again
+
+  db:
+    image: postgres:15 #The db service — don't build anything, just pull the official PostgreSQL image from Docker Hub.
+    environment:
+      - POSTGRES_DB=visitdb
+      - POSTGRES_USER=devops
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - pgdata:/var/lib/postgresql/data #Store the database data in a volume called pgdata. This means your data survives even if the container is destroyed.
+volumes:
+  pgdata:
